@@ -1,10 +1,9 @@
 import threading as t
 from ultralytics import YOLO
-model = YOLO("yolov10s.pt")
+#model = YOLO("yolov10s.pt")
 x=0
-def capture_traffic_data(video_path):
+def capture_traffic_data(model,video_path):
     global x
-    global model
     predictions = model.predict(
         video_path,
         show=False,
@@ -18,8 +17,9 @@ def capture_traffic_data(video_path):
     for result in predictions:
         x= len(result.boxes)
 
-def start_sys(vid_path):
-    t.Thread(target=capture_traffic_data, args=(vid_path)).start()
+def start_sys(i,vid_path):
+    #f"model{i}" = YOLO("yolov10s.pt")
+    t.Thread(target=capture_traffic_data, args=(YOLO("yolov10s.pt"),vid_path)).start()
 
 def get_vc():
     global x
