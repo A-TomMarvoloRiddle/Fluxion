@@ -3,7 +3,6 @@ import test.RL as rl
 import time
 import threading as t
 
-
 class TrafficLight:
     def __init__(self, direction):
         self.direction = direction
@@ -15,15 +14,14 @@ class TrafficLight:
     def set_state(self, state,duration = None):
         self.state = state
         self.duration=duration
-        print(f">> {self.direction} >>> {self.state} >>> {self.duration} seconds" if self.state in ["Green", "Yellow"] else f"{self.direction} >> {self.state} >> {self.duration} seconds")
+        print(f">> D{self.direction} >>> {self.state} >>> {self.duration} seconds" if self.state in ["Green", "Yellow"] else f"D{self.direction} >> {self.state} >> {self.duration} seconds")
 
-    def start_vid(self,i,path):
-        vid.start_sys(i,path)
+    def start_vid(self,path):
+        vid.start_sys(path)
 
     def assign_vc(self): 
         self.vc= vid.get_vc()
-
-    def get_vc(self):
+        #print("\n",self.vc,"\n")
         return self.vc
 
 directions={}
@@ -31,40 +29,46 @@ directions={}
 def gcal():
     global directions
     gt=[]
-    for d in directions:
-        print("\n",d,"\n")
-        vc=d.get_vc()
-        d.gt=rl.update_green_time(vc)
-        gt.append(d,d.gt,0)
+    for dir in directions:
+        #print("\n",dir,"\n")
+        d=directions[dir]
+        d.gt=rl.update_green_time(d.vc)
+        gt.append([dir,d.gt,0])
     return gt
 
 def rcal(temp):
     for i in range(1, len(temp)):
         temp[i][2] = sum(temp[j][1] + 5 for j in range(i))
+    return temp
     '''for d in directions:
         d.rt=(gt[i][2] for i in range(len(gt)))'''
 
 def change_light(schedule):
     global direction
+    lock = t.Lock()
     while schedule:
-        print(f"\nFinal Schedule: {schedule}\n")
-        current = schedule[0]
-        next_directions = schedule[1:4]
+        with lock:
+            print(f"\nFinal Schedule: {schedule}\n")
+            current = schedule[0]
+            next_directions = schedule[1:4]
 
-        directions[current[0]].set_state("Green", current[1])
-        for dir in next_directions:
-            directions[dir[0]].set_state("Red", dir[2])
+            directions[current[0]].set_state("Green", current[1])
+            for dir in next_directions:
+                directions[dir[0]].set_state("Red", dir[2])
+            print("\n")
 
-        time.sleep(current[1])
+            time.sleep(current[1])
+        with lock:    
+            directions[current[0]].set_state("Yellow", 5)
+            for dir in next_directions:
+                dir[2]=dir[2]-current[1]
+                directions[dir[0]].set_state("Red", dir[2])
+            print("\n")
+
+            time.sleep(5)
         
-        directions[current[0]].set_state("Yellow", 5)
-        for dir in next_directions:
-            dir[2]=dir[2]-current[1]
-            directions[dir[0]].set_state("Red", dir[2])
-
-        time.sleep(5)
-
-        left=current[0].assign_vc()
+        left=directions[current[0]].assign_vc()
+        #print("\n",left,"\n")
         rl.update_penalty(left)
 
         schedule.pop(0)
@@ -79,7 +83,7 @@ def create_junc(temp):
     i=1
     for path in temp:
         directions[i]=TrafficLight(i)
-        directions[i].start_vid(i,path)
+        directions[i].start_vid(path)
         time.sleep(5)
         directions[i].assign_vc()
         i+=1
@@ -91,8 +95,8 @@ def start_system(paths):
     #time.sleep(5)
     schedule = gcal()
     schedule = rcal(schedule)
-    print("\n",schedule,"\n")
+    #print("\n",schedule,"\n")
     t.Thread(target=change_light, args=(schedule,)).start()
 
-start_system(("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4"))
+start_system(("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/West.mp4"))
 
