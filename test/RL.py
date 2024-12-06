@@ -8,7 +8,7 @@ gt_history=[[0*2]*1]  #stores last vehicle count and its green time
 
 # Function to update green time for a specific vehicle count
 def update_green_time(x_new):
-    global historical_data, penalty_free_counter, fixed_green_times, gt_
+    global historical_data, penalty_free_counter, fixed_green_times
     penalty_adjustment = 2  # Increment/decrement for green time when penalty is received
     penalty_threshold = 3  # Number of penalty-free cycles needed to fix a green time
     # Check if x_new has a fixed green time
@@ -49,12 +49,18 @@ def update_green_time(x_new):
     #print(f"Updated green time for {vehicle_count} vehicles: {t_new_gt} seconds")
     
     gt_history[-1]=x_new,t_new_gt  #storing current cycle's vehicle count and green time
-    historical_data[x_new]={"last_gt":t_new_gt,"penalty":0} #storing current cycle's green time for specified vc, 0 is for no significance 
+    historical_data[x_new]={"last_gt":t_new_gt,"penalty":punishment_received} #storing current cycle's green time for specified vc, 0 is for no significance 
     return t_new_gt
 
 def update_penalty(vehicle_count):
     global historical_data
     vc_threshold=5  # Threshold for vehicle count to trigger penalty
+
+    # Check if vehicle_count exists in historical_data
+    if vehicle_count not in historical_data:
+        # Initialize with a default value if vehicle_count does not exist
+        historical_data[vehicle_count] = {"last_gt": 10, "penalty": 1}  # Set appropriate default values for other keys
+
     if vehicle_count > vc_threshold:
         punish=1
     elif vehicle_count < vc_threshold/2:
@@ -62,3 +68,4 @@ def update_penalty(vehicle_count):
     else:
         punish=0
     historical_data[vehicle_count]["penalty"]=punish
+
