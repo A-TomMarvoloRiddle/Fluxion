@@ -1,37 +1,38 @@
-import test.Test_3 as ul
-#import test.RL as rl
-import numpy as np
-#ul.start_system("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/West.mp4")
-#t.Thread(target=ul.start_system, args=("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/West.mp4")).start()
-#t.Thread(target=ul.start_system, args=("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/West.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4")).start()
+import test.vid_vc as vid
+import test.RL as rl
+import time
 
 class TrafficLight:
     def __init__(self, direction):
         self.direction = direction
         self.state = "Red"  # Initial state
         self.duration = 0  # Initial duration
-        self.vc=0 # Initial Vehicle Count        
+        self.vc=0 # Initial Vehicle Count      
+        self.gt=0 #Inital Green Time
+        self.rt=0 #Inital Red Time
 
     def set_state(self, state,duration = None):
         self.state = state
         self.duration=duration
         print(f">> {self.direction} >>> {self.state} >>> {self.duration} seconds" if self.state in ["Green", "Yellow"] else f"{self.direction} >> {self.state} >> {self.duration} seconds")
 
-directions=[]
+    def start_vid(self,path):
+        vid.start_sys(path)
 
-def create_junc(ndir):
-    global directions
-    d=np.arange(1,ndir+1)
-    dl=list(map(lambda x:"d"+ str(x),d))
-    print(dl)
-    for dir in dl:
-        directions.append(TrafficLight(dir))
+    def assign_vc(self): 
+        self.vc= vid.get_vc()
+        #return self.vc
 
-def feeds(*args):
-    for x in args:
-        ul.start_system(x)
+directions={}
+dl=[]
 
+def create_junc(*args):
+    i=1
+    for path in args:
+        directions[i]=TrafficLight(i)
+        directions[i].start_vid(path)
+        time.sleep(5)
+        directions[i].assign_vc()
+        i+=1
+        self.gt=rl.update_green_time()
 
-create_junc(3)
-print(directions)
-feeds("dfhdf","dfshdfshd","dfs","dshf")
