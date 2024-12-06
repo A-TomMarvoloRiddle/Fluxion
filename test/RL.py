@@ -2,7 +2,9 @@
 historical_data = {}  # Stores last green time and penalty status for each vehicle count
 penalty_free_counter = {}  # Tracks penalty-free cycles for specific vehicle counts
 fixed_green_times = {}  # Stores fixed green times for specific vehicle counts
-gt_history=[1][2]  #stores last vehicle count and its green time
+gt_history=[[0*2]*1]  #stores last vehicle count and its green time
+#[[None for j in range(cols)] for i in range(rows)]
+#[[None*2]*1]
 
 # Function to update green time for a specific vehicle count
 def update_green_time(x_new):
@@ -15,7 +17,10 @@ def update_green_time(x_new):
         return fixed_green_times[x_new]
     
     # Get last vehicle count and last green time and penalty status for the given vehicle count
-    x_old,t_old_gt,punishment_received=gt_history[-1][0],historical_data.get(x_new, {"last_gt": 10, "penalty": 1})
+    data=historical_data.get(x_new, {"last_gt": 10, "penalty": 1})
+    last_gt = data["last_gt"]
+    penalty = data["penalty"]
+    x_old,t_old_gt,punishment_received=gt_history[-1][0],last_gt,penalty
 
     # Calculate new green time based on the punishment condition
     if punishment_received==1:
@@ -44,7 +49,7 @@ def update_green_time(x_new):
     #print(f"Updated green time for {vehicle_count} vehicles: {t_new_gt} seconds")
     
     gt_history[-1]=x_new,t_new_gt  #storing current cycle's vehicle count and green time
-    historical_data[x_new]["last_gt"]=t_new_gt #storing current cycle's green time for specified vc
+    historical_data[x_new]={"last_gt":t_new_gt,"penalty":0} #storing current cycle's green time for specified vc, 0 is for no significance 
     return t_new_gt
 
 def update_penalty(vehicle_count):
