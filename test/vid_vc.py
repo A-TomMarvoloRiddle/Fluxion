@@ -17,7 +17,7 @@ def capture_traffic_data(model,video_path):
     for result in predictions:
         x= len(result.boxes)
 
-def start_sys(i,vid_path):
+def start_sys(vid_path):
     #f"model{i}" = YOLO("yolov10s.pt")
     t.Thread(target=capture_traffic_data, args=(YOLO("yolov10s.pt"),vid_path)).start()
 
