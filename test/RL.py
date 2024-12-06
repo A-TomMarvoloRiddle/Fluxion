@@ -15,10 +15,6 @@ def update_green_time(x_new):
         return fixed_green_times[x_new]
     
     # Get last vehicle count and last green time and penalty status for the given vehicle count
-    '''last_data = historical_data.get(x_new, {"last_gt": 10, "penalty": False})
-    #print(last_data)
-    t_old_gt = last_data["last_gt"]
-    x_old = x_new # Previous vehicle count is assumed to be the same for tracking simplicity'''
     x_old,t_old_gt,punishment_received=gt_history[-1][0],historical_data.get(x_new, {"last_gt": 10, "penalty": 1})
 
     # Calculate new green time based on the punishment condition
