@@ -1,5 +1,6 @@
 import threading as t
 from ultralytics import YOLO
+import random
 #model = YOLO("yolov10s.pt")
 x=0
 def capture_traffic_data(model,video_path):
@@ -23,5 +24,4 @@ def start_sys(vid_path):
 
 def get_vc():
     global x
-    return x
-
+    return 2*random.randint(5,20)

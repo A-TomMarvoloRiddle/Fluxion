@@ -43,10 +43,14 @@ def rcal(temp):
     '''for d in directions:
         d.rt=(gt[i][2] for i in range(len(gt)))'''
 
+def get_schedule(temp):
+    return temp
+
 def change_light(schedule):
     global direction
     lock = t.Lock()
     while schedule:
+        get_schedule(schedule)
         with lock:
             print(f"\nFinal Schedule: {schedule}\n")
             current = schedule[0]
@@ -55,7 +59,7 @@ def change_light(schedule):
             directions[current[0]].set_state("Green", current[1])
             for dir in next_directions:
                 directions[dir[0]].set_state("Red", dir[2])
-            print("\n")
+            #print("\n")
 
             time.sleep(current[1])
         with lock:    
@@ -63,7 +67,7 @@ def change_light(schedule):
             for dir in next_directions:
                 dir[2]=dir[2]-current[1]
                 directions[dir[0]].set_state("Red", dir[2])
-            print("\n")
+            #print("\n")
 
             time.sleep(5)
         
@@ -90,7 +94,7 @@ def create_junc(temp):
     #print(directions)
 
 def start_system(paths):
-    print("\n       FLUXION by ERROR 505\n")
+    #print("\n       FLUXION by ERROR 505\n")
     create_junc(paths)
     #time.sleep(5)
     schedule = gcal()
