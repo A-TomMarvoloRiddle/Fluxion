@@ -59,7 +59,7 @@ def change_light(schedule):
             directions[current[0]].set_state("Green", current[1])
             for dir in next_directions:
                 directions[dir[0]].set_state("Red", dir[2])
-            #print("\n")
+            print("\n")
 
             time.sleep(current[1])
         with lock:    
@@ -72,7 +72,7 @@ def change_light(schedule):
             time.sleep(5)
         
         left=directions[current[0]].assign_vc()
-        #print("\n",left,"\n")
+        print("\nLeft vc : ",left,"\n")
         rl.update_penalty(left)
 
         schedule.pop(0)
@@ -94,13 +94,12 @@ def create_junc(temp):
     #print(directions)
 
 def start_system(paths):
-    #print("\n       FLUXION by ERROR 505\n")
+    print("\n       FLUXION by ERROR 505\n")
     create_junc(paths)
     #time.sleep(5)
     schedule = gcal()
     schedule = rcal(schedule)
-    #print("\n",schedule,"\n")
+    print("\nInitial : ",schedule,"\n")
     t.Thread(target=change_light, args=(schedule,)).start()
 
 start_system(("C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/North.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/South.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/East.mp4","C:/Users/Apaar/Pictures/FLUXION/Data_Aryan/West.mp4"))
-
