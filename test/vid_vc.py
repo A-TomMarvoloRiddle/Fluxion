@@ -24,4 +24,4 @@ def start_sys(vid_path):
 
 def get_vc():
     global x
-    return 2*random.randint(5,20)
+    return random.randint(10,40)
