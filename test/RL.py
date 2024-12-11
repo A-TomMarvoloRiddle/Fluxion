@@ -24,7 +24,7 @@ def update_green_time(curr_vc):
     if penalty == 1:
         if curr_vc > prev_vc:  # Traffic increased, increase green time
             delta_gt = (factor * (curr_vc - prev_vc))//1
-            curr_gt = min(50, perv_gt + delta_gt)
+            curr_gt = min(40, perv_gt + delta_gt)
         elif curr_vc < prev_vc:  # Traffic decreased, decrease green time
             delta_gt = (factor * (prev_vc - curr_vc))//1
             curr_gt = max(5, perv_gt - delta_gt)  # Ensure minimum green time
