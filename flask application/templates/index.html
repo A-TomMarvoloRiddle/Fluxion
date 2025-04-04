@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light System</title>
+    <style>
+        nav {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .intersection-container {
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-template-rows: repeat(3, auto);
+            gap: 20px;
+            justify-content: center;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        /* Road styling */
+        .intersection-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background-color: #333;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .intersection-container::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            background-color: #333;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        /* Road markings */
+        .road-marking-h {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(to right, white 0, white 20px, transparent 20px, transparent 40px);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .road-marking-v {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: repeating-linear-gradient(to bottom, white 0, white 20px, transparent 20px, transparent 40px);
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .signal-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .light {
+            width: 200px;
+            height: 100px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: red;
+            color: white;
+            transition: background-color 0.5s ease;
+        }
+
+        .pedestrian-sign {
+            width: 200px;
+            height: 40px;
+            margin-top: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Positioning signals */
+        .north {
+            grid-column: 2;
+            grid-row: 1;
+            margin-bottom: 0;
+            left:230px
+        }
+        
+        .south {
+            grid-column: 2;
+            grid-row: 3;
+        }
+        
+        .east {
+            grid-column: 3;
+            grid-row: 2;
+        }
+        
+        .west {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .walk { background-color: #22c55e; }
+        .dont-walk { background-color: #dc2626; }
+        .green { background-color: green; }
+        .red { background-color: red; }
+        .yellow { background-color: yellow; color: black; }
+
+        .timer {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 420px);
+            gap: 30px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .status {
+            font-size: 1.2em;
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <b>🚦 Smart Traffic Control System</b>
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/data">Data</a>
+        </div>
+    </nav>
+    
+        
+    <div class="status" id="status">System Status: Operating</div>
+    <div class="intersection-container">
+        <!-- Road markings -->
+        <div class="road-marking-h"></div>
+        <div class="road-marking-v"></div>
+
+        <!-- Traffic signals -->
+        <div>
+            <div class="signal-container north">
+            <div class="light" id="north">
+                <div>North</div>
+                <div class="timer">0s</div>
+            </div>
+            <div class="pedestrian-sign" id="north-walk">DON'T WALK</div>
+        </div>
+        </div>
+
+        <div class="signal-container south">
+            <div class="light" id="south">
+                <div>South</div>
+                <div class="timer">0s</div>
+            </div>
+            <div class="pedestrian-sign" id="south-walk">DON'T WALK</div>
+        </div>
+
+        <div class="signal-container east">
+            <div class="light" id="east">
+                <div>East</div>
+                <div class="timer">0s</div>
+            </div>
+            <div class="pedestrian-sign" id="east-walk">DON'T WALK</div>
+        </div>
+
+        <div class="signal-container west">
+            <div class="light" id="west">
+                <div>West</div>
+                <div class="timer">0s</div>
+            </div>
+            <div class="pedestrian-sign" id="west-walk">DON'T WALK</div>
+        </div>
+    </div>
+
+    <div class="video-grid">
+        <video width="420" height="340" controls autoplay>
+            <source src="{{ url_for('static', filename='video/North.mp4') }}" type="video/mp4">
+        </video>
+        <video width="420" height="340" controls autoplay>
+            <source src="{{ url_for('static', filename='video/South.mp4') }}" type="video/mp4">
+        </video>
+        <video width="420" height="340" controls autoplay>
+            <source src="{{ url_for('static', filename='video/East.mp4') }}" type="video/mp4">
+        </video>
+        <video width="420" height="340" controls autoplay>
+            <source src="{{ url_for('static', filename='video/West.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <script>
+        const directions = ["north", "south", "east", "west"];
+const timers = {
+    north: 9,
+    south: 12,
+    east: 8,
+    west: 13
+};
+
+let currentIndex = 0;
+let isTransitioning = false;
+const SAFETY_INTERVAL = 3;
+const statusElement = document.getElementById('status');
+
+// Detailed crossing conflict matrix
+const pedestrianCrossings = {
+    north: {
+        allowedCrossings: ['east'], // Perpendicular crossings
+        blockingDirections: ['north', 'south'] // Directions with conflicting vehicle paths
+    },
+    south: {
+        allowedCrossings: ['west'], // Perpendicular crossings
+        blockingDirections: ['north', 'south'] // Directions with conflicting vehicle paths
+    },
+    east: {
+        allowedCrossings: ['south'], // Perpendicular crossings
+        blockingDirections: ['east', 'west'] // Directions with conflicting vehicle paths
+    },
+    west: {
+        allowedCrossings: ['north'], // Perpendicular crossings
+        blockingDirections: ['east', 'west'] // Directions with conflicting vehicle paths
+    }
+};
+
+// Advanced pedestrian crossing logic
+function managePedestrianSignals(currentDirection) {
+    directions.forEach(direction => {
+        const walkSign = document.getElementById(`${direction}-walk`);
+        
+        // Check if this direction can walk based on current traffic flow
+        const canWalk = pedestrianCrossings[currentDirection].allowedCrossings.includes(direction);
+        
+        if (canWalk) {
+            walkSign.className = 'pedestrian-sign walk';
+            walkSign.textContent = 'WALK';
+        } else {
+            walkSign.className = 'pedestrian-sign dont-walk';
+            walkSign.textContent = "DON'T WALK";
+        }
+    });
+}
+
+function setAllRed() {
+    directions.forEach(direction => {
+        const light = document.getElementById(direction);
+        const timerElement = light.querySelector('.timer');
+        const walkSign = document.getElementById(`${direction}-walk`);
+        
+        light.className = 'light red';
+        timerElement.textContent = 'Red';
+        walkSign.className = 'pedestrian-sign dont-walk';
+        walkSign.textContent = "DON'T WALK";
+    });
+}
+
+function updateLights() {
+    if (isTransitioning) {
+        statusElement.textContent = `System Status: Safety Interval (${SAFETY_INTERVAL}s)`;
+        return;
+    }
+
+    statusElement.textContent = 'System Status: Operating';
+    
+    const currentDirection = directions[currentIndex];
+    
+    directions.forEach((direction, index) => {
+        const light = document.getElementById(direction);
+        const timerElement = light.querySelector('.timer');
+
+        if (index === currentIndex) {
+            // Current green direction logic
+            if (timers[direction] <= 5 && timers[direction] > 0) {
+                light.className = 'light yellow';
+            } else {
+                light.className = 'light green';
+            }
+            timerElement.textContent = `${timers[direction]}s`;
+            
+            // Manage pedestrian signals for this traffic state
+            managePedestrianSignals(currentDirection);
+            
+            timers[direction] -= 1;
+
+            if (timers[direction] < 0) {
+                isTransitioning = true;
+                setAllRed();
+                
+                setTimeout(() => {
+                    isTransitioning = false;
+                    timers[direction] = 12; // Reset to standard cycle
+                    currentIndex = (currentIndex + 1) % directions.length;
+                }, SAFETY_INTERVAL * 1000);
+            }
+        } else {
+            // Other directions when current direction is green
+            light.className = 'light red';
+            timerElement.textContent = 'Red';
+        }
+    });
+}
+
+// Logging for monitoring
+function logTrafficState() {
+    const currentDirection = directions[currentIndex];
+    console.log(`Current Green Direction: ${currentDirection}`);
+    
+    directions.forEach(direction => {
+        const walkSign = document.getElementById(`${direction}-walk`);
+        console.log(`${direction.toUpperCase()} Crossing: ${walkSign.textContent}`);
+    });
+}
+
+// Initialize interval for updating lights and logging
+setInterval(updateLights, 1000);
+setInterval(logTrafficState, 10000); // Log traffic state every 10 seconds
+    </script>
+</body>
+</html>
