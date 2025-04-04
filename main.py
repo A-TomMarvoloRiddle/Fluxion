@@ -1,5 +1,5 @@
-import test.vid_vc as vid
-import test.RL as rl
+import modules.vid_vc as vid
+import modules.RL as rl
 import time
 import threading as t
 
