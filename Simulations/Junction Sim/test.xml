@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-12-07 11:56:05 by Eclipse SUMO netedit Version 1.21.0
+<neteditConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
+
+    <input>
+        <sumocfg-file value="C:\Users\aryan\Desktop\SUMO_demo\sumo test\test&apos;.sumocfg"/>
+        <additional-files value="C:\Users\aryan\Desktop\SUMO_demo\sumo test\test&apos;.add.xml"/>
+        <route-files value="C:\Users\aryan\Desktop\SUMO_demo\sumo test\test&apos;.rou.xml"/>
+        <sumo-net-file value="C:\Users\aryan\Desktop\SUMO_demo\sumo test\test.net.xml"/>
+    </input>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="0"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.50"/>
+        <rectangular-lane-cut value="0"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="0"/>
+    </pedestrian>
+
+</neteditConfiguration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <tlLogic id="J2" type="static" programID="0" offset="0">
+        <phase duration="42" state="Ggrrrrrrrrrr"/>
+        <phase duration="3"  state="yyyyrrrrrrrr"/>
+        <phase duration="2"  state="rrGGrrrrrrrr"/>
+        <phase duration="3"  state="rryyyrrrrrrr"/>
+        <phase duration="3"  state="rrrrGrrrrrrr"/>
+        <phase duration="3"  state="rrrryyrrrrrr"/>
+        <phase duration="2"  state="rrrrrGrrrrrr"/>
+        <phase duration="3"  state="yyrrryrrrrrr"/>
+    </tlLogic>
+</additional>
