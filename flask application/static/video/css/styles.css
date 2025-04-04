@@ -1,0 +1,157 @@
+h1 {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-size: 40px;
+    color: white;
+    padding: 15px;
+    margin: 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.intersection-container {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+    justify-content: center;
+    margin: 40px auto;
+    position: relative;
+}
+
+/* Road styling */
+.intersection-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: #333;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.intersection-container::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    background-color: #333;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+/* Road markings */
+.road-marking-h {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(to right, white 0, white 20px, transparent 20px, transparent 40px);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.road-marking-v {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: repeating-linear-gradient(to bottom, white 0, white 20px, transparent 20px, transparent 40px);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.signal-container {
+    position: relative;
+    z-index: 2;
+}
+
+.light {
+    width: 200px;
+    height: 100px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    color: white;
+    transition: background-color 0.5s ease;
+}
+
+.pedestrian-sign {
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.5s ease;
+}
+
+/* Positioning signals */
+.north {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom:100px
+}
+
+.south {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.east {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.west {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.walk { background-color: #22c55e; }
+.dont-walk { background-color: #dc2626; }
+.green { background-color: green; }
+.red { background-color: red; }
+.yellow { background-color: yellow; color: black; }
+
+.timer {
+    font-size: 1.5em;
+    margin-top: 10px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 420px);
+    gap: 30px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.status {
+    font-size: 1.2em;
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
