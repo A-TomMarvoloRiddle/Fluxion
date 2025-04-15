@@ -79,4 +79,3 @@ This system aims to revolutionize traditional fixed-time traffic signal systems 
 - Daksh Sharma
 - Keshav Shrimali
 - Aryan Jain
-- Ashish Joshi
